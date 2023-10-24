@@ -4,6 +4,8 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+        Hotel.AddRemoveRoom();
+        Hotel.AddRemoveRoom();
+        Hotel.AddRemoveRoom();
     }
 }
