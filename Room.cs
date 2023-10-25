@@ -3,7 +3,7 @@ namespace Hotel_Management_Software;
 class Room
 {
     public string RoomNr;
-    string Description;
+    public string Description;
     public bool isBooked;
     public bool isChecked;
     double RoomPrice;
@@ -18,6 +18,8 @@ class Room
         RoomPrice = roomPrice;
         Capacity = capacity;
         FloorNr = floorNr;
+        isBooked = false;
+        isChecked = false;
     }
 }
 
