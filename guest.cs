@@ -33,7 +33,7 @@ class Guest
             {
                 foreach(Booking bp in r.roomBookings)
                 {
-                    Console.Write($"\n{bp.BookingPeriod.StartDate} until {bp.BookingPeriod.EndDate}");
+                    Console.Write($"\n{bp.BookingPeriod.StartDate} until {bp.BookingPeriod.EndDate} ");
                 }
                 //types out every booking that is currently made for room "r"
                 Console.WriteLine("");
@@ -79,15 +79,17 @@ class Guest
                 {
                     Console.Write($"\n{bp.BookingPeriod.StartDate} until {bp.BookingPeriod.EndDate}");
                 }       
-            Console.Write("\nPlease input a startdate for your booking (mm/dd/yyyy hh/mm):");
+            Console.WriteLine($"check in at: 15.00");
+            Console.Write("\nPlease input a startdate for your booking (mm/dd/yyyy): ");
             string userInput = Console.ReadLine()!;
-            if(DateTime.TryParse(userInput, out DateTime startDate) == true)
+            if(DateOnly.TryParse(userInput, out DateOnly startDate) == true)
             //checks if the string "userInput" input by the guest is in a valid format for being converted to DateTime and if so produces a DateTime variable "startDate"
             {
                 Console.WriteLine(startDate);
-                Console.Write("\nPlease input an enddate for your booking (mm/dd/yyyy hh/mm):");
+                Console.WriteLine("check out at 11.00");
+                Console.Write("\nPlease input an enddate for your booking (mm/dd/yyyy):");
                 userInput = Console.ReadLine()!;
-                if(DateTime.TryParse(userInput, out DateTime endDate) == true)
+                if(DateOnly.TryParse(userInput, out DateOnly endDate) == true)
                 //checks if the string "userInput" input by the guest is in a valid format for being converted to DateTime and if so produces a DateTime variable "endDate"
                 {
                     Hotel.Rooms[i].isBooked = true;
@@ -96,7 +98,7 @@ class Guest
                     //Adds the chosen room to list of rooms to be booked
                     Booking myBooking = new Booking(new Guest("Erik", "19940617", "0763293705", "erik@nbi.se"), roomBooking, myBp, roomBooking[0].RoomPrice, roomBooking[0].Capacity);
                     Hotel.Rooms[i].roomBookings.Add(myBooking);
-                    Console.WriteLine($"{myBooking.Guest.Name}, {myBooking.BookedRooms[0].RoomNr}, Period: {myBooking.BookingPeriod.StartDate} until {myBooking.BookingPeriod.EndDate}");
+                    Console.WriteLine($"{myBooking.Guest.Name}, {myBooking.BookedRooms[0].RoomNr}, Period: {myBooking.BookingPeriod.StartDate} until {myBooking.BookingPeriod.EndDate} check in at: {myBooking.BookingPeriod.StartTime} check out at: {myBooking.BookingPeriod.EndTime}");
                 }
                 else
                 {

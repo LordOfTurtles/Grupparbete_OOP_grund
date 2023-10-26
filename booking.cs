@@ -30,11 +30,19 @@ class Booking
 class BookingPeriod
 {
     //class for the period of a specific booking, includes a startdate and an enddate
-    public DateTime StartDate;
-    public DateTime EndDate;
-    public BookingPeriod(DateTime startDate, DateTime endDate)
+    public DateOnly StartDate;
+    public DateOnly EndDate;
+
+    public TimeOnly StartTime;
+
+    public TimeOnly EndTime;
+    public BookingPeriod(DateOnly startDate, DateOnly endDate)
     {
         StartDate = startDate;
         EndDate = endDate;
+        StartTime = new TimeOnly (15,00);
+        EndTime = new TimeOnly (11,00);
     }
+
+    
 }
