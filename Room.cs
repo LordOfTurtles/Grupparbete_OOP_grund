@@ -24,5 +24,28 @@ class Room
         isBooked = false;
         isChecked = false;
     }
+
+    public override string ToString()
+    {
+        string rom = $"Room number: {RoomNr}. '{Description}'\nPrice: {RoomPrice}kr Capacity: {Capacity} \nCurrently booked dates: ";
+        
+        if(roomBookings.Count > 0)
+        
+            //checks if there are any bookings in the current room "r"
+            {
+
+                foreach(Booking bp in roomBookings)
+                {
+                    rom += $"\n{bp.BookingPeriod.StartDate} until {bp.BookingPeriod.EndDate} ";
+                }
+                //types out every booking that is currently made for room "r"
+                rom += "";
+            }
+            else
+            {
+                rom += "No bookings at the moment";
+            }
+        return rom;
+    }
 }
 
