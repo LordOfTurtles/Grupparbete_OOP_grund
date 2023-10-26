@@ -63,6 +63,52 @@ class Program
 
         else if(userInput == "2")
         {
+            System.Console.WriteLine("Please enter admin password: ");
+            userInput = Console.ReadLine();
+
+            if( userInput == Hotel.Password)
+            {
+                while(isRunning)
+                {
+                    Console.WriteLine(" 1. Add or remove a room: \n2. Check in guest \n3. Check out guest: \n4. Check room avaliability: ");
+                    userInput = Console.ReadLine();
+                    switch(userInput)
+                    {
+                        case "1":
+                        Hotel.AddRemoveRoom();
+                        break;
+
+                        case "2":
+                        Hotel.CheckIn();
+                        break;
+
+                        case "3":
+                        Hotel.CheckOut();
+                        break;
+
+                        case "4":
+                        Hotel.RoomAvaliability();
+                        break;
+
+                        //direktBokning();
+
+                        default:
+                        Console.WriteLine("Invalid input");
+                        break;
+
+
+                    }
+                }
+
+                
+            }
+
+            else
+            {
+                Console.WriteLine("incorrect password");
+            }
+
+            
 
         }
 
