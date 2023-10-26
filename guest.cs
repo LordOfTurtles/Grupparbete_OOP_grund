@@ -4,22 +4,20 @@ class Guest
 {
     //class for guests, includes name of guest, an id, phonenr, email and a list of reviews made by the guest
     string Name;
-    string GuestId;
     string PhoneNr;
     string Email;
-    public List<string> guestReview = new List<string>();
+    public List<Booking> guestBookings = new List<Booking>();
     //list of reviews made by a specific guest
 
-    public Guest(string name, string guesId, string phoneNr, string email)
+    public Guest(string name, string phoneNr, string email)
     {
         //constructor for the guest class, does not include a list of reviews which are added when written by the guest
         Name = name;
-        GuestId = guesId;
         PhoneNr = phoneNr;
         Email = email;
     }
 
-    public static void AvaliableRooms()
+    public static void AvaliableRooms(Guest guest)
     {
         //method for checking what rooms are available and when, also offers the guest the option to book a room through calling on the BookRoom method
         Console.WriteLine("Currently available rooms:");
@@ -49,7 +47,7 @@ class Guest
         //asks the guest if they want to book a room after looking at availability
         if(userInput.ToLower() == "y")
         {
-            BookRoom();
+            BookRoom(guest);
         }
         else if(userInput.ToLower() == "n")
         {
@@ -61,7 +59,7 @@ class Guest
         }
     }
 
-    static void BookRoom()
+    public static Booking BookRoom(Guest guest)
     //method for guests to book rooms
     {
         List<Room> roomBooking = new List<Room>();
@@ -96,9 +94,11 @@ class Guest
                     BookingPeriod myBp = new BookingPeriod(startDate, endDate);
                     roomBooking.Add(Hotel.Rooms[i]);
                     //Adds the chosen room to list of rooms to be booked
-                    Booking myBooking = new Booking(new Guest("Erik", "19940617", "0763293705", "erik@nbi.se"), roomBooking, myBp, roomBooking[0].RoomPrice, roomBooking[0].Capacity);
+                    Booking myBooking = new Booking(guest, roomBooking, myBp, roomBooking[0].RoomPrice, roomBooking[0].Capacity);
                     Hotel.Rooms[i].roomBookings.Add(myBooking);
                     Console.WriteLine($"{myBooking.Guest.Name}, {myBooking.BookedRooms[0].RoomNr}, Period: {myBooking.BookingPeriod.StartDate} until {myBooking.BookingPeriod.EndDate} check in at: {myBooking.BookingPeriod.StartTime} check out at: {myBooking.BookingPeriod.EndTime}");
+                    return myBooking;
+
                 }
                 else
                 {
@@ -110,9 +110,14 @@ class Guest
                 Console.WriteLine("Error, incorrect format for startdate");
             }
         }
+        return null;
     }
-    static void WriteReview()
+    public static string WriteReview(Guest guest, out int i)
     {
         //method for guest to write a review for a specific booking
+        System.Console.WriteLine("Enter your review here:");
+        string review = Console.ReadLine()!;
+        i = 0;
+        return review;
     }
 }
