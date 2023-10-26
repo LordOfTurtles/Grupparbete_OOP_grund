@@ -24,23 +24,8 @@ class Guest
         foreach(Room r in Hotel.Rooms)
         //goes through every room that exists in the static list in the hotel class
         {
-            Console.WriteLine($"Room number: {r.RoomNr}. '{r.Description}'\nPrice: {r.RoomPrice}kr Capacity: {r.Capacity}");
-            Console.Write("Currently booked dates: ");
-            if(r.roomBookings.Count > 0)
-            //checks if there are any bookings in the current room "r"
-            {
-                foreach(Booking bp in r.roomBookings)
-                {
-                    Console.Write($"\n{bp.BookingPeriod.StartDate} until {bp.BookingPeriod.EndDate} ");
-                }
-                //types out every booking that is currently made for room "r"
-                Console.WriteLine("");
-            }
-            else
-            {
-                Console.WriteLine("No bookings at the moment");
-            }
-            Console.WriteLine("");
+            Console.WriteLine(r);
+      
         }
         Console.WriteLine("Would you like to book a room? [Y]/[N]");
         string userInput = Console.ReadLine()!;
