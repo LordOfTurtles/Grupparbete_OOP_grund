@@ -69,8 +69,18 @@ class Hotel
             if(Rooms[i].isChecked == false && Rooms[i].isBooked == true)
             //checks that the specified room is not currently checked into and that there is a booking for the room
             {
+                foreach(Booking b in Rooms[i].roomBookings)
+                {
+                    Console.WriteLine($"{i+1}. {b.Guest.Name} {b.BookingPeriod}");
+                }
+                Console.WriteLine("Please choose which booking you would like to check in: ");
+                int userInput = int.Parse(Console.ReadLine()) -1;
+                
+
+                
                 Rooms[i].isChecked = true;
                 Console.WriteLine($"Room number: {Rooms[i].RoomNr}, '{Rooms[i].Description}' has been checked into.");
+                
                 //sets the status of the room to being checked into
             }
             else if(Rooms[i].isChecked == true)
@@ -132,6 +142,8 @@ class Hotel
                 Console.WriteLine($"{r}\nStatus: Unavailable\n");
             }
         }
+        Console.WriteLine("Press any key to continue");
+        Console.ReadKey();
         
     }  
 }

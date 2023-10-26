@@ -44,5 +44,11 @@ class BookingPeriod
         EndTime = new TimeOnly (11,00);
     }
 
-    
+    public override string ToString()
+    {   
+
+        return $"The booking starts at: {StartDate} The booking ends at: {EndDate}";
+    }
+
+
 }

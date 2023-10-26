@@ -17,104 +17,120 @@ class Program
         Hotel.CheckOut();
         Guest.AvaliableRooms();
         Guest.AvaliableRooms();*/
-
-        System.Console.WriteLine("Welcome to Hotel Booking.");
-        bool isRunning = true;
-        System.Console.WriteLine("Choose an option: \n1.Guest \n2.Staff");
-        string userInput = Console.ReadLine()!;
-        if(userInput == "1")
+        
+        bool mainMeny = true;
+        while(mainMeny)
         {
-            System.Console.WriteLine("Register new guest");
-            System.Console.WriteLine("Name: ");
-            string name = Console.ReadLine()!;
-            System.Console.WriteLine("Phone number:");
-            string phoneNr = Console.ReadLine()!;
-            System.Console.WriteLine("Email: ");
-            string email = Console.ReadLine()!;
-
-            Guest guest = new Guest(name, phoneNr, email);
-
-            while(isRunning)
+            System.Console.WriteLine("Welcome to Hotel Booking.");
+            bool isRunning = true;
+            System.Console.WriteLine("Choose an option: \n1.Guest \n2.Staff");
+            string userInput = Console.ReadLine()!;
+            if(userInput == "1")
             {
-                System.Console.WriteLine("Please select an option: \n1.Check availability \n2.Start a new booking \n3.Write a review");
-                userInput = Console.ReadLine()!;
-                switch(userInput)
-                {
-                    case "1":
-                    Guest.AvaliableRooms(guest);
-                    break;
+                System.Console.WriteLine("Register new guest");
+                System.Console.WriteLine("Name: ");
+                string name = Console.ReadLine()!;
+                System.Console.WriteLine("Phone number:");
+                string phoneNr = Console.ReadLine()!;
+                System.Console.WriteLine("Email: ");
+                string email = Console.ReadLine()!;
 
-                    case "2":
-                    guest.guestBookings.Add(Guest.BookRoom(guest));
-                    break;
+                Guest guest = new Guest(name, phoneNr, email);
 
-                    case "3":
-                    string review = Guest.WriteReview(guest, out int i);
-                    guest.guestBookings[i].Review = review;
-                    break;
-
-                    default:
-                    System.Console.WriteLine("Invalid input.");
-                    break;
-
-                }
-            }
-        }
-
-        else if(userInput == "2")
-        {
-            System.Console.WriteLine("Please enter admin password: ");
-            userInput = Console.ReadLine();
-
-            if( userInput == Hotel.Password)
-            {
                 while(isRunning)
                 {
-                    Console.WriteLine(" 1. Add or remove a room: \n2. Check in guest \n3. Check out guest: \n4. Check room avaliability: ");
-                    userInput = Console.ReadLine();
+                    System.Console.WriteLine("Please select an option: \n1.Check availability \n2.Start a new booking \n3.Write a review \nLog out[x]");
+                    userInput = Console.ReadLine()!;
                     switch(userInput)
                     {
                         case "1":
-                        Hotel.AddRemoveRoom();
+                        Guest.AvaliableRooms(guest);
                         break;
 
                         case "2":
-                        Hotel.CheckIn();
+                        guest.guestBookings.Add(Guest.BookRoom(guest));
                         break;
 
                         case "3":
-                        Hotel.CheckOut();
+                        string review = Guest.WriteReview(guest, out int i);
+                        guest.guestBookings[i].Review = review;
                         break;
 
-                        case "4":
-                        Hotel.RoomAvaliability();
+                        case "x":
+                        isRunning = false;
                         break;
-
-                        //direktBokning();
 
                         default:
-                        Console.WriteLine("Invalid input");
+                        System.Console.WriteLine("Invalid input.");
                         break;
-
 
                     }
                 }
+            }
+
+            else if(userInput == "2")
+            {
+                System.Console.WriteLine("Please enter admin password: ");
+                userInput = Console.ReadLine();
+
+                if( userInput == Hotel.Password)
+                {
+                    
+                    while(isRunning)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("1. Add or remove a room: \n2. Check in guest \n3. Check out guest: \n4. Check room avaliability:\nLog out[x] ");
+                        userInput = Console.ReadLine();
+                        switch(userInput)
+                        {
+                            case "1":
+                            Hotel.AddRemoveRoom();
+                            break;
+
+                            case "2":
+                            Hotel.CheckIn();
+                            break;
+
+                            case "3":
+                            Hotel.CheckOut();
+                            break;
+
+                            case "4":
+                            Hotel.RoomAvaliability();
+                            break;
+
+                            case "x":
+                            isRunning = false;
+                            break;
+
+                            //direktBokning();
+
+                            default:
+                            Console.WriteLine("Invalid input");
+                            break;
+
+
+                        }
+                    }
+
+                    
+                }
+
+                else
+                {
+                    Console.WriteLine("incorrect password");
+                }
 
                 
+
             }
 
             else
             {
-                Console.WriteLine("incorrect password");
+                System.Console.WriteLine("Invalid input.");
             }
 
-            
-
         }
-
-        else
-        {
-            System.Console.WriteLine("Invalid input.");
-        }
+        
     }
 }

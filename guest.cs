@@ -3,9 +3,9 @@ namespace Hotel_Management_Software;
 class Guest
 {
     //class for guests, includes name of guest, an id, phonenr, email and a list of reviews made by the guest
-    string Name;
-    string PhoneNr;
-    string Email;
+    public string Name;
+    public string PhoneNr;
+    public string Email;
     public List<Booking> guestBookings = new List<Booking>();
     //list of reviews made by a specific guest
 
