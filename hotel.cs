@@ -8,12 +8,14 @@ class Hotel
 {
     public string Name;
     public int CurrentGuests;
+
+    public static string Password = "Hotel123";
     public static List<Room> Rooms = new List<Room>();
     //list of rooms at the hotel
     public static void AddRemoveRoom()
     //method for staff to add or remove rooms through the console
     {
-        Console.WriteLine("Do you want to add or remove a room?");
+        Console.WriteLine("Do you want to add or remove a room? [a]/[r]");
         string input = Console.ReadLine()!;
 
         if (input.ToLower() == "a")
@@ -123,11 +125,11 @@ class Hotel
         {
             if(r.isChecked == false)
             {
-                Console.WriteLine($"Room number: {r.RoomNr}. {r.Description} is currently available");
+                Console.WriteLine($"{r} \nStatus: Available\n");
             }
             else
             {
-                Console.WriteLine($"Room number: {r.RoomNr}. {r.Description} is currently checked into");
+                Console.WriteLine($"{r}\nStatus: Unavailable\n");
             }
         }
         
