@@ -2,6 +2,7 @@ using Hotel_Management_Software;
 
 class ConsoleUI
 {
+    public static List<Guest> guests = new List<Guest>();
     public static void MainMenu()
     {
         bool mainMeny = true;
@@ -42,6 +43,7 @@ class ConsoleUI
                 string email = Console.ReadLine()!;
 
                 Guest guest = new Guest(name, phoneNr, email);
+                guests.Add(guest);
 
                 while(isRunning)
                 {
@@ -146,15 +148,89 @@ class ConsoleUI
                             break;
 
                             case "2":
-                            Hotel.CheckIn();
+                            {
+                                Console.Write("What roomnumber is getting checked into?: ");
+                                string roomNr = Console.ReadLine()!;
+                                if(Hotel.Rooms.Exists(x => x.RoomNr.Contains(roomNr)))
+                                //checks if a room with the roomnumber specified through the console exists
+                                {
+                                    int i = Hotel.Rooms.FindIndex(x => x.RoomNr.Contains(roomNr));
+                                    //makes an integer for the index used in the list of rooms matching the roomnumber input by the staff
+                                    if(Hotel.Rooms[i].roomBookings.Exists(x => x.IsChecked == true) && Hotel.Rooms[i].roomBookings.Count > 0)
+                                    //checks that the specified room is not currently checked into and that there is a booking for the room
+                                    {
+                                        Console.WriteLine($"Error, Room number: {Hotel.Rooms[i].RoomNr}, '{Hotel.Rooms[i].Description}' is already checked into.");
+                                    }
+                                    else if(Hotel.Rooms[i].roomBookings.Count > 0)
+                                    {
+                                        int bNr = 1;
+                                        foreach(Booking b in Hotel.Rooms[i].roomBookings)
+                                        {
+                                            Console.WriteLine($"{bNr}. {b.Guest.Name} {b.BookingPeriod}");
+                                            bNr++;
+                                        }
+                                        Console.WriteLine("Please choose which booking you would like to check in: ");
+                                        int uInput = int.Parse(Console.ReadLine()) -1;
+                                        if(uInput < Hotel.Rooms[i].roomBookings.Count)
+                                        {
+                                            Hotel.CheckIn(i, uInput);
+                                            Console.WriteLine($"Room number: {Hotel.Rooms[i].RoomNr}, '{Hotel.Rooms[i].Description}' has been checked into.");
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Error, invalid input");
+                                        }
+                                    
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"Error, Room number: {Hotel.Rooms[i].RoomNr}, '{Hotel.Rooms[i].Description}' has not been booked.");
+                                    }
+                                    Console.WriteLine(guests[0].guestBookings[0].IsChecked);
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"Error! no room with roomnumber '{roomNr}' exists");
+                                }
+                                Console.ReadKey();
+                            }
                             break;
 
                             case "3":
-                            Hotel.CheckOut();
+                            {
+                                Console.Write("What roomnumber is getting checked out of?: ");
+                                string roomNr = Console.ReadLine()!;
+                                if(Hotel.Rooms.Exists(x => x.RoomNr.Contains(roomNr)))
+                                //checks if a room with the roomnumber specified through the console exists
+                                {
+                                    int i = Hotel.Rooms.FindIndex(x => x.RoomNr.Contains(roomNr));
+                                    //makes an integer for the index used in the list of rooms matching the roomnumber input by the staff
+                                    if(Hotel.Rooms[i].roomBookings.Exists(x => x.IsChecked == true))
+                                    //checks that the specified room is currently checked into
+                                    {
+                                        int j = Hotel.Rooms[i].roomBookings.FindIndex(x => x.IsChecked == true);
+                                        Hotel.CheckOut(i, j);
+                                        Console.WriteLine($"Room number: {Hotel.Rooms[i].RoomNr}. {Hotel.Rooms[i].Description}, has been checked out of.");
+                                        //sets the status of the room to not be checked into or booked
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"Error, Room number: {Hotel.Rooms[i].RoomNr}. {Hotel.Rooms[i].Description}, is currently not checked into.");
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"Error! no room with roomnumber '{roomNr}' exists");
+                                }
+                                Console.WriteLine(guests[0].guestBookings[0].IsChecked);
+                                Console.ReadKey();
+                            }
                             break;
 
                             case "4":
-                            Hotel.RoomAvaliability();
+                            Console.WriteLine(Hotel.RoomAvaliability());
+                            Console.WriteLine("Press any key to continue");
+                            Console.ReadKey();
                             break;
 
                             case "x":

@@ -20,8 +20,7 @@ class Guest
     public static string AvaliableRooms()
     {
         //method for checking what rooms are available and when, also offers the guest the option to book a room through calling on the BookRoom method
-        Console.WriteLine("Currently available rooms:");
-        string output = "";
+        string output = "Currently available rooms:";
         foreach(Room r in Hotel.Rooms)
         //goes through every room that exists in the static list in the hotel class
         {
