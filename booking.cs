@@ -10,6 +10,7 @@ class Booking
     //a list of rooms that are booked
     public BookingPeriod BookingPeriod;
     //a bookingperiod specifying a startdate and enddate
+    public bool IsChecked;
     public double TotalPrice;
     //the total price of the booking (prices of all the rooms x timeperiod)
     public int TotalOccupants;
@@ -25,6 +26,7 @@ class Booking
         BookingPeriod = bookingPeriod;
         TotalPrice = totalPrice;
         TotalOccupants = totalOccupants;
+        IsChecked = false;
     }
 }
 class BookingPeriod
