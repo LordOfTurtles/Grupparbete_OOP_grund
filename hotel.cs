@@ -66,26 +66,31 @@ class Hotel
         {
             int i = Rooms.FindIndex(x => x.RoomNr.Contains(roomNr));
             //makes an integer for the index used in the list of rooms matching the roomnumber input by the staff
-            if(Rooms[i].isChecked == false && Rooms[i].isBooked == true)
+            if(Rooms[i].roomBookings.Exists(x => x.IsChecked == true) && Rooms[i].roomBookings.Count > 0)
             //checks that the specified room is not currently checked into and that there is a booking for the room
             {
+                Console.WriteLine($"Error, Room number: {Rooms[i].RoomNr}, '{Rooms[i].Description}' is already checked into.");
+            }
+            else if(Rooms[i].roomBookings.Count > 0)
+            {
+                int bNr = 1;
                 foreach(Booking b in Rooms[i].roomBookings)
                 {
-                    Console.WriteLine($"{i+1}. {b.Guest.Name} {b.BookingPeriod}");
+                    Console.WriteLine($"{bNr}. {b.Guest.Name} {b.BookingPeriod}");
+                    bNr++;
                 }
                 Console.WriteLine("Please choose which booking you would like to check in: ");
                 int userInput = int.Parse(Console.ReadLine()) -1;
-                
-
-                
-                Rooms[i].isChecked = true;
-                Console.WriteLine($"Room number: {Rooms[i].RoomNr}, '{Rooms[i].Description}' has been checked into.");
-                
-                //sets the status of the room to being checked into
-            }
-            else if(Rooms[i].isChecked == true)
-            {
-                Console.WriteLine($"Error, Room number: {Rooms[i].RoomNr}, '{Rooms[i].Description}' is already checked into.");
+                if(userInput < Rooms[i].roomBookings.Count)
+                {
+                    Rooms[i].roomBookings[userInput].IsChecked = true;
+                    Console.WriteLine($"Room number: {Rooms[i].RoomNr}, '{Rooms[i].Description}' has been checked into.");
+                }
+                else
+                {
+                    Console.WriteLine("Error, invalid input");
+                }
+            
             }
             else
             {
@@ -96,6 +101,7 @@ class Hotel
         {
             Console.WriteLine($"Error! no room with roomnumber '{roomNr}' exists");
         }
+        Console.ReadKey();
     }
 
     public static void  CheckOut()
@@ -108,11 +114,11 @@ class Hotel
         {
             int i = Rooms.FindIndex(x => x.RoomNr.Contains(roomNr));
             //makes an integer for the index used in the list of rooms matching the roomnumber input by the staff
-            if(Rooms[i].isChecked == true)
+            if(Rooms[i].roomBookings.Exists(x => x.IsChecked == true))
             //checks that the specified room is currently checked into
             {
-                Rooms[i].isChecked = false;
-                Rooms[i].isBooked = false;
+                int j = Rooms[i].roomBookings.FindIndex(x => x.IsChecked == true);
+                Rooms[i].roomBookings.RemoveAt(j);
                 Console.WriteLine($"Room number: {Rooms[i].RoomNr}. {Rooms[i].Description}, has been checked out of.");
                 //sets the status of the room to not be checked into or booked
             }
@@ -133,13 +139,13 @@ class Hotel
         Console.WriteLine("Current room availability");
         foreach(Room r in Rooms)
         {
-            if(r.isChecked == false)
+            if(r.roomBookings.Exists(x => x.IsChecked == true))
             {
-                Console.WriteLine($"{r} \nStatus: Available\n");
+                Console.WriteLine($"{r}\nStatus: Unavailable\n");
             }
             else
             {
-                Console.WriteLine($"{r}\nStatus: Unavailable\n");
+                Console.WriteLine($"{r} \nStatus: Available\n");
             }
         }
         Console.WriteLine("Press any key to continue");
