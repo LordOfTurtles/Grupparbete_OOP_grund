@@ -25,7 +25,6 @@ class Guest
         //goes through every room that exists in the static list in the hotel class
         {
             Console.WriteLine(r);
-      
         }
         Console.WriteLine("Would you like to book a room? [Y]/[N]");
         string userInput = Console.ReadLine()!;
@@ -75,7 +74,6 @@ class Guest
                 if(DateOnly.TryParse(userInput, out DateOnly endDate) == true)
                 //checks if the string "userInput" input by the guest is in a valid format for being converted to DateTime and if so produces a DateTime variable "endDate"
                 {
-                    Hotel.Rooms[i].isBooked = true;
                     BookingPeriod myBp = new BookingPeriod(startDate, endDate);
                     roomBooking.Add(Hotel.Rooms[i]);
                     //Adds the chosen room to list of rooms to be booked
@@ -83,7 +81,6 @@ class Guest
                     Hotel.Rooms[i].roomBookings.Add(myBooking);
                     Console.WriteLine($"{myBooking.Guest.Name}, {myBooking.BookedRooms[0].RoomNr}, Period: {myBooking.BookingPeriod.StartDate} until {myBooking.BookingPeriod.EndDate} check in at: {myBooking.BookingPeriod.StartTime} check out at: {myBooking.BookingPeriod.EndTime}");
                     return myBooking;
-
                 }
                 else
                 {
