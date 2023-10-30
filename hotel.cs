@@ -12,48 +12,16 @@ class Hotel
     public static string Password = "Hotel123";
     public static List<Room> Rooms = new List<Room>();
     //list of rooms at the hotel
-    public static void AddRemoveRoom()
-    //method for staff to add or remove rooms through the console
+    public static void AddRoom(Room r)
+    //method for staff to add rooms through the console
     {
-        Console.WriteLine("Do you want to add or remove a room? [a]/[r]");
-        string input = Console.ReadLine()!;
+        Rooms.Add(r);
+    }
 
-        if (input.ToLower() == "a")
-        {
-            Console.Write("Room number: ");
-            string roomNr = Console.ReadLine()!;
-
-            Console.Write("Description: ");
-            string description = Console.ReadLine()!;
-
-            Console.Write("Room price: ");
-            double roomPrice = double.Parse(Console.ReadLine()!);
-
-            Console.Write("Capacity: ");
-            int capacity = int.Parse(Console.ReadLine()!);     
-
-            Console.Write("Floor number: ");
-            int floorNr = int.Parse(Console.ReadLine()!);
-
-            Rooms.Add(new Room(roomNr, description, roomPrice, capacity, floorNr));
-            //adds a new room with the details specified by the staff through console inputs
-        }
-        else if (input.ToLower() == "r")
-        {
-            int i = 0;
-            foreach(Room r in Rooms )
-            {   
-                i++;
-                Console.WriteLine($"{i}.  {r.RoomNr}. '{r.Description}'");
-            }
-            //Lists all the rooms that are available to be removed with a corresponding number starting at 1
-            Console.Write("Choose room to be removed");
-            int remove = int.Parse(Console.ReadLine()!);
-            Rooms.RemoveAt(remove -1);
-            //removes a room corresponding to the number input through the console
-        }
-
-
+    public static void RemoveRoom(int remove)
+    //method for staff to remove rooms through the console
+    {
+        Rooms.RemoveAt(remove);
     }
 
     public static void CheckIn()
