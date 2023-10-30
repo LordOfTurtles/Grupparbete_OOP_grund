@@ -6,8 +6,6 @@ class Room
     public List<Booking> roomBookings = new List<Booking>();
     public string RoomNr;
     public string Description;
-    public bool isBooked;
-    public bool isChecked;
     public double RoomPrice;
     public int Capacity;
 
@@ -21,8 +19,6 @@ class Room
         RoomPrice = roomPrice;
         Capacity = capacity;
         FloorNr = floorNr;
-        isBooked = false;
-        isChecked = false;
     }
 
     public override string ToString()
