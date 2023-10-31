@@ -6,15 +6,17 @@ class Guest
     public string Name;
     public string PhoneNr;
     public string Email;
+    public string Password;
     public List<Booking> guestBookings = new List<Booking>();
     //list of reviews made by a specific guest
 
-    public Guest(string name, string phoneNr, string email)
+    public Guest(string name, string phoneNr, string email, string password)
     {
         //constructor for the guest class, does not include a list of reviews which are added when written by the guest
         Name = name;
         PhoneNr = phoneNr;
         Email = email;
+        Password = password;
     }
 
     public static string AvaliableRooms()
@@ -43,4 +45,9 @@ class Guest
         
         
     }
+}
+
+class GuestList
+{
+    public static List<Guest> guestList = new List<Guest>();
 }
