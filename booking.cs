@@ -27,6 +27,20 @@ class Booking
         TotalPrice = totalPrice;
         TotalOccupants = totalOccupants;
         IsChecked = false;
+
+        
+    }
+
+    public override string ToString()
+    {
+        string output = "Rooms:  ";
+
+        foreach(Room r in BookedRooms)
+        {
+            output += $"\n{r.RoomNr} {r.Description}";
+        }
+        output += $"\n{BookingPeriod.StartDate} - {BookingPeriod.EndDate}";
+        return output;
     }
 }
 class BookingPeriod
@@ -51,6 +65,8 @@ class BookingPeriod
 
         return $"The booking starts at: {StartDate} The booking ends at: {EndDate}";
     }
+
+
 
 
 }
