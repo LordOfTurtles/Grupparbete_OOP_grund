@@ -4,6 +4,7 @@ class Room
 //class for rooms at the hotel, includes a list of periods during which the room is booked, a roomnumber, a description of the room, bools for whether the room is checked into/booked or not, a price for one night, guest capacity and floor number
 {
     public List<Booking> roomBookings = new List<Booking>();
+    public List<Booking> pastBookings = new List<Booking>();
     public string RoomNr;
     public string Description;
     public double RoomPrice;
