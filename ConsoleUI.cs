@@ -210,8 +210,20 @@ class ConsoleUI
                                     //checks that the specified room is currently checked into
                                     {
                                         int j = Hotel.Rooms[i].roomBookings.FindIndex(x => x.IsChecked == true);
-                                        Hotel.CheckOut(i, j);
                                         Console.WriteLine($"Room number: {Hotel.Rooms[i].RoomNr}. {Hotel.Rooms[i].Description}, has been checked out of.");
+                                        Console.WriteLine("would you like to add an review? [y]/[n]");
+                                        input = Console.ReadLine();
+                                        if(input.ToLower() == "y")
+                                        {
+                                            Console.WriteLine("Please write your review: ");
+                                            string review = Console.ReadLine();
+
+                                            Guest.AddReview(Hotel.Rooms[i].roomBookings[j], review );
+
+
+                                        }
+                                        Hotel.CheckOut(i, j);
+
                                         //sets the status of the room to not be checked into or booked
                                     }
                                     else
