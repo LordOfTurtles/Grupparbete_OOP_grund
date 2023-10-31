@@ -75,8 +75,9 @@ class ConsoleUI
                         break;
 
                         case "3":
-                        string review = Guest.WriteReview(guest, out int i);
-                        guest.guestBookings[i].Review = review;
+                        ReviewInput(guest);
+
+                       
                         break;
 
                         case "x":
@@ -307,5 +308,23 @@ class ConsoleUI
                 }
             }
         }
+    }
+
+    static void ReviewInput(Guest guest)
+    {
+        Console.WriteLine("Which booking do you want to review?");
+        for( int i = 0; i < guest.guestBookings.Count; i++)
+        {
+            Console.WriteLine($"{i+1}. {guest.guestBookings[i]}");
+        }
+        int input = int.Parse(Console.ReadLine());
+
+        Console.WriteLine("Enter your review here:");
+        string review = Console.ReadLine();
+
+        Guest.AddReview(guest.guestBookings[input -1],review);
+
+        Console.WriteLine($"Review {guest.guestBookings[input-1].Review}");
+
     }
 }
