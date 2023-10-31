@@ -36,12 +36,11 @@ class Guest
     }
     //method for guests to book rooms
     
-    public static string WriteReview(Guest guest, out int i)
+    public static void AddReview( Booking booking, string review)
     {
         //method for guest to write a review for a specific booking
-        System.Console.WriteLine("Enter your review here:");
-        string review = Console.ReadLine()!;
-        i = 0;
-        return review;
+        booking.Review = review;
+        
+        
     }
 }
