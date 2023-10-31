@@ -34,7 +34,9 @@ class Hotel
     //method for staff to check guests out of their room
     {
         Rooms[i].roomBookings[j].IsChecked = false;
+        Rooms[i].pastBookings.Add(Rooms[i].roomBookings[j]);
         Rooms[i].roomBookings.RemoveAt(j);
+
     }
 
     public static string RoomAvaliability()
