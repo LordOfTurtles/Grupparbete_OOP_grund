@@ -36,6 +36,22 @@ class Guest
         room.roomBookings.Add(myBooking);
         guest.guestBookings.Add(myBooking);
     }
+
+    public static bool CompareDates(DateOnly startDate, DateOnly endDate, Room room)
+    {
+        foreach(Booking b in room.roomBookings)
+        {
+            if(startDate >= b.BookingPeriod.StartDate && startDate < b.BookingPeriod.EndDate || endDate > b.BookingPeriod.StartDate && endDate <= b.BookingPeriod.EndDate)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        return true;
+    }
     //method for guests to book rooms
     
     public static void AddReview( Booking booking, string review)
