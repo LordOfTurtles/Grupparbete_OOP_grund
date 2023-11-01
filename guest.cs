@@ -31,9 +31,9 @@ class Guest
         return output;
     }
 
-    public static void BookRoom(Booking myBooking, int i, Guest guest)
+    public static void BookRoom(Room room, Booking myBooking, Guest guest)
     {
-        Hotel.Rooms[i].roomBookings.Add(myBooking);
+        room.roomBookings.Add(myBooking);
         guest.guestBookings.Add(myBooking);
     }
     //method for guests to book rooms
