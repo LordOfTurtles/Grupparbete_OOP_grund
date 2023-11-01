@@ -35,11 +35,11 @@ class Booking
     //An override method that overrides whats typed out in the console when a booking object is the input 
     public override string ToString()
     {
-        string output = "Rooms:  ";
+        string output = "Rooms:";
 
         foreach(Room r in BookedRooms)
         {
-            output += $"\n{r.RoomNr} {r.Description}";
+            output += $" '{r.RoomNr}. {r.Description}'";
         }
         output += $"\n{BookingPeriod.StartDate} - {BookingPeriod.EndDate}";
         return output;

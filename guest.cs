@@ -27,7 +27,7 @@ class Guest
         foreach(Room r in Hotel.Rooms)
         //goes through every room that exists in the static list in the hotel class
         {
-            output += $"{r}\n";
+            output += $"\n{r}\n";
         }
         return output;
     }

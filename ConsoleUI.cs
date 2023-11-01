@@ -31,6 +31,7 @@ static class ConsoleUI
     //Guest menu with options to login, sign up or go back to main menu
     public static void GuestMenu()
     {
+        Console.Clear();
         Guest guest = null!;
         Console.WriteLine("1. Log in\n2. Sign up as new guest\n3. Main menu");
         string userInput = Console.ReadLine()!;
@@ -53,8 +54,10 @@ static class ConsoleUI
         bool isRunning = true;
         while(isRunning)
         {
+            Console.Clear();
             Console.WriteLine("Please select an option: \n1.Check availability \n2.Start a new booking \n3.Write a review \nLog out[x]");
             userInput = Console.ReadLine()!;
+            Console.Clear();
             switch(userInput)
             {
                 case "1":
@@ -275,6 +278,7 @@ static class ConsoleUI
 
     static void BookingInput(Guest guest)
     {
+        Console.Clear();
         {
             List<Room> roomBooking = new List<Room>();
             //a temporary list in which rooms that are to be booked are added
@@ -340,11 +344,17 @@ static class ConsoleUI
     //Method for where a guest can write a review
     static void ReviewInput(Guest guest)
     {
+        Console.Clear();
         Console.WriteLine("Which booking do you want to review?");
         for( int i = 0; i < guest.guestBookings.Count; i++)
         {
-            Console.WriteLine($"{i+1}. {guest.guestBookings[i]}");
+            if(guest.guestBookings[i].Review == null)
+            {
+                Console.WriteLine($"{i+1}. {guest.guestBookings[i]}");
+                //Incomplete function: bookings with a review are not displayed but can be overwritten.
+            }
         }
+        
         int input = int.Parse(Console.ReadLine()!);
 
         Console.WriteLine("Enter your review here:");
@@ -355,12 +365,13 @@ static class ConsoleUI
         Console.WriteLine($"Review {guest.guestBookings[input-1].Review}");
 
     }
-    //geust login method stored from previous registration
+    //guest login method stored from previous registration
     static Guest LoginGuest()
     {
         Guest guest = null!;
         while(guest == null)
         {
+            Console.Clear();
             Console.Write("Please enter your email address: ");
             string email = Console.ReadLine()!;
             Console.Write("Please enter your password: ");
@@ -395,6 +406,7 @@ static class ConsoleUI
     //guest registration method
     static Guest RegisterGuest()
     {
+        Console.Clear();
         Console.WriteLine("Register new guest");
         Console.Write("Name: ");
         string name = Console.ReadLine()!;
@@ -437,7 +449,8 @@ public static void PrintErrorMessanger(string? message)
     {
         Console.WriteLine($"Error, {message}");
     }
-    
+    Console.Write("Press any key to continue");
+    Console.ReadKey();
 }
 
 }
