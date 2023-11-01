@@ -1,3 +1,4 @@
+using System.Data.Common;
 using System.Security.Cryptography.X509Certificates;
 using Hotel_Management_Software;
 
@@ -301,7 +302,7 @@ static class ConsoleUI
                         BookingPeriod myBp = new BookingPeriod(startDate, endDate);
                         roomBooking.Add(room);
                         //Adds the chosen room to list of rooms to be booked
-                        Booking myBooking = new Booking(guest, roomBooking, myBp, roomBooking[0].RoomPrice, roomBooking[0].Capacity);
+                        Booking myBooking = new Booking(guest, roomBooking, myBp, roomBooking[0].Capacity);
                         Guest.BookRoom(room, myBooking, guest);
                         Console.WriteLine($"{myBooking.Guest.Name}, {myBooking.BookedRooms[0].RoomNr}, Period: {myBooking.BookingPeriod.StartDate} until {myBooking.BookingPeriod.EndDate} check in at: {myBooking.BookingPeriod.StartTime} check out at: {myBooking.BookingPeriod.EndTime}");
                     }
@@ -385,4 +386,22 @@ static class ConsoleUI
         GuestList.AddGuest(guest);
         return guest;
     }
+
+public static void Initialize()
+{
+    Hotel.Rooms.Add(new Room("1", "Royal suite", 3999.99, 5, 4));
+    Hotel.Rooms.Add(new Room("2", "Double room", 1499.99, 3, 2));
+    Hotel.Rooms.Add(new Room("3", "Single room", 599.99, 1, 3));
+    Hotel.Rooms.Add(new Room("4", "Family room", 1799.99, 5, 2));
+
+    GuestList.guestList.Add(new Guest("Henrik", "073", "henrik.com", "hola"));
+    GuestList.guestList.Add(new Guest("Krister", "072", "krister.com", "hej"));
+    GuestList.guestList.Add(new Guest("Sandra", "071", "sandra.com", "halla"));
+
+    Booking b = new Booking(GuestList.guestList[0], new List<Room>(), new BookingPeriod(new DateOnly (2023,12,24), new DateOnly (2023,12,26)), 1);
+    b.BookedRooms.Add(Hotel.Rooms[1]);
+
+    Guest.BookRoom(Hotel.Rooms[1], b, b.Guest);
+}
+
 }
