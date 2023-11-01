@@ -18,13 +18,17 @@ class Booking
     public string? Review;
     //a review written by the guest. Preferably at a nonspecified time after their stay.
 
-    public Booking(Guest guest, List<Room> bookedRooms, BookingPeriod bookingPeriod, double totalPrice, int totalOccupants)
+    public Booking(Guest guest, List<Room> bookedRooms, BookingPeriod bookingPeriod, int totalOccupants)
     {
         //constructor for the booking class, does not include review since that is to be added at a later time.
         Guest = guest;
         BookedRooms = bookedRooms;
         BookingPeriod = bookingPeriod;
-        TotalPrice = totalPrice;
+        //TotalPrice = totalPrice;
+        foreach(Room r in bookedRooms)
+        {
+            TotalPrice += r.RoomPrice;
+        }
         TotalOccupants = totalOccupants;
         IsChecked = false;       
     }
