@@ -15,7 +15,7 @@ class Booking
     //the total price of the booking (prices of all the rooms x timeperiod)
     public int TotalOccupants;
     //input by the guest to be compared to the total capacity of the rooms to be booked
-    public string Review;
+    public string? Review;
     //a review written by the guest. Preferably at a nonspecified time after their stay.
 
     public Booking(Guest guest, List<Room> bookedRooms, BookingPeriod bookingPeriod, double totalPrice, int totalOccupants)
@@ -26,9 +26,7 @@ class Booking
         BookingPeriod = bookingPeriod;
         TotalPrice = totalPrice;
         TotalOccupants = totalOccupants;
-        IsChecked = false;
-
-        
+        IsChecked = false;       
     }
 
     public override string ToString()
