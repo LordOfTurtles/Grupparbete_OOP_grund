@@ -5,12 +5,11 @@ class ConsoleUI
 {
     public static void MainMenu()
     {
-        bool mainMeny = true;
-        while(mainMeny)
+        bool isRunning = true;
+        while(isRunning)
         {
-            System.Console.WriteLine("Welcome to Hotel Booking.");
-            bool isRunning = true;
-            System.Console.WriteLine("Choose an option: \n1.Guest \n2.Staff");
+            Console.WriteLine("Welcome to Hotel Booking.");
+            Console.WriteLine("Choose an option: \n1.Guest \n2.Staff");
             string userInput = Console.ReadLine()!;
             if(userInput == "1")
             {
@@ -24,40 +23,56 @@ class ConsoleUI
 
             else
             {
-                System.Console.WriteLine("Invalid input.");
+                Console.WriteLine("Invalid input.");
             }
-
-        }
-        
+        }      
     }
 
     public static void GuestMenu()
     {
-        Guest guest = LoginGuest();
+        Guest guest = null!;
+        Console.WriteLine("1. Log in\n2. Sign up as new guest\n3. Main menu");
+        string userInput = Console.ReadLine()!;
+        switch(userInput)
+        {
+            case "1":
+                guest = LoginGuest();
+            break;
+            case "2":
+                guest = RegisterGuest();
+            break;
+            case "3":
+                MainMenu();
+            break;
+            default:
+                Console.WriteLine("Error, invalid input");
+                GuestMenu();
+            break;          
+        }
         bool isRunning = true;
         while(isRunning)
         {
-            System.Console.WriteLine("Please select an option: \n1.Check availability \n2.Start a new booking \n3.Write a review \nLog out[x]");
-            string userInput = Console.ReadLine()!;
+            Console.WriteLine("Please select an option: \n1.Check availability \n2.Start a new booking \n3.Write a review \nLog out[x]");
+            userInput = Console.ReadLine()!;
             switch(userInput)
             {
                 case "1":
-                Console.WriteLine(Guest.AvaliableRooms());
-                Console.WriteLine("Would you like to book a room? [Y]/[N]");
-                userInput = Console.ReadLine()!;
-                //asks the guest if they want to book a room after looking at availability
-                if(userInput.ToLower() == "y")
-                {
-                    BookingInput(guest);
-                }
-                else if(userInput.ToLower() == "n")
-                {
+                    Console.WriteLine(Guest.AvaliableRooms());
+                    Console.WriteLine("Would you like to book a room? [Y]/[N]");
+                    userInput = Console.ReadLine()!;
+                    //asks the guest if they want to book a room after looking at availability
+                    if(userInput.ToLower() == "y")
+                    {
+                        BookingInput(guest);
+                    }
+                    else if(userInput.ToLower() == "n")
+                    {
 
-                }
-                else
-                {
-                    Console.WriteLine("Error, invalid input");
-                }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error, invalid input");
+                    }
                 break;
 
                 case "2":
@@ -66,8 +81,6 @@ class ConsoleUI
 
                 case "3":
                 ReviewInput(guest);
-
-                
                 break;
 
                 case "x":
@@ -75,7 +88,7 @@ class ConsoleUI
                 break;
 
                 default:
-                System.Console.WriteLine("Invalid input.");
+                Console.WriteLine("Invalid input.");
                 break;
 
             }
@@ -85,8 +98,8 @@ class ConsoleUI
     public static void StaffMenu()
     {
         bool isRunning = true;
-        System.Console.WriteLine("Please enter admin password: ");
-                string userInput = Console.ReadLine();
+        Console.WriteLine("Please enter admin password: ");
+                string userInput = Console.ReadLine()!;
 
                 if( userInput == Hotel.Password)
                 {
@@ -95,7 +108,7 @@ class ConsoleUI
                     {
                         Console.Clear();
                         Console.WriteLine("1. Add or remove a room: \n2. Check in guest \n3. Check out guest: \n4. Check room avaliability:\nLog out[x] ");
-                        userInput = Console.ReadLine();
+                        userInput = Console.ReadLine()!;
                         switch(userInput)
                         {
                             case "1":
@@ -161,7 +174,7 @@ class ConsoleUI
                                             bNr++;
                                         }
                                         Console.WriteLine("Please choose which booking you would like to check in: ");
-                                        int uInput = int.Parse(Console.ReadLine()) -1;
+                                        int uInput = int.Parse(Console.ReadLine()!) -1;
                                         if(uInput < Hotel.Rooms[i].roomBookings.Count)
                                         {
                                             Hotel.CheckIn(i, uInput);
@@ -202,11 +215,11 @@ class ConsoleUI
                                         int j = Hotel.Rooms[i].roomBookings.FindIndex(x => x.IsChecked == true);
                                         Console.WriteLine($"Room number: {Hotel.Rooms[i].RoomNr}. {Hotel.Rooms[i].Description}, has been checked out of.");
                                         Console.WriteLine("would you like to add an review? [y]/[n]");
-                                        input = Console.ReadLine();
+                                        input = Console.ReadLine()!;
                                         if(input.ToLower() == "y")
                                         {
                                             Console.WriteLine("Please write your review: ");
-                                            string review = Console.ReadLine();
+                                            string review = Console.ReadLine()!;
 
                                             Guest.AddReview(Hotel.Rooms[i].roomBookings[j], review );
 
@@ -319,10 +332,10 @@ class ConsoleUI
         {
             Console.WriteLine($"{i+1}. {guest.guestBookings[i]}");
         }
-        int input = int.Parse(Console.ReadLine());
+        int input = int.Parse(Console.ReadLine()!);
 
         Console.WriteLine("Enter your review here:");
-        string review = Console.ReadLine();
+        string review = Console.ReadLine()!;
 
         Guest.AddReview(guest.guestBookings[input -1],review);
 
@@ -331,79 +344,52 @@ class ConsoleUI
     }
     static Guest LoginGuest()
     {
-        bool isRunning = true;
-        while(isRunning)
+        Guest guest = null!;
+        while(guest == null)
         {
-            Console.WriteLine("1. Log in\n2. Sign up as new guest\n3. Go back");
-            string userInput = Console.ReadLine()!;
-            if(userInput == "1")
+            Console.Write("Please enter your email address: ");
+            string email = Console.ReadLine()!;
+            Console.Write("Please enter your password: ");
+            string password = Console.ReadLine()!;
+            guest = GuestList.LogInAttempt(email, password, out string outputmessage);
+            Console.WriteLine(outputmessage);
+            if(guest == null)
             {
-                isRunning = true;
-                while(isRunning)
+                Console.WriteLine("1. Try again\n2. Register new guest\n3. Main menu");
+                string userInput = Console.ReadLine()!;
+                switch(userInput)
                 {
-                    Console.Write("Please enter your email address: ");
-                    string email = Console.ReadLine()!;
-                    if(GuestList.guestList.Exists(x => x.Email.Contains(email)))
-                    {
-                        Guest? guest = GuestList.guestList.Find(x => x.Email.Contains(email));
-                        while(isRunning)
-                        {
-                            Console.Write("Please enter your password: ");
-                            userInput = Console.ReadLine()!;
-                            if(userInput == guest.Password)
-                            {
-                                return guest!;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Error, Invalid password");
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error, Email address not found");
-                        Console.WriteLine("1. Try again\n2. Go back");
-                        userInput = Console.ReadLine()!;
-                        if(userInput == "1")
-                        {
-
-                        }
-                        else if(userInput == "2")
-                        {
-                            MainMenu();
-                        }
-                        else
-                        {
-
-                        }
-                    }
+                    case "1":
+                    
+                    break;
+                    case "2":
+                        guest = RegisterGuest();
+                    break;
+                    case "3":
+                        MainMenu();
+                    break;
+                    default:
+                    
+                    break;
                 }
             }
-            else if(userInput == "2")
-            {
-                Console.WriteLine("Register new guest");
-                Console.Write("Name: ");
-                string name = Console.ReadLine()!;
-                Console.Write("Phone number:");
-                string phoneNr = Console.ReadLine()!;
-                Console.Write("Email: ");
-                string email = Console.ReadLine()!;
-                Console.Write("Password: ");
-                string password = Console.ReadLine()!;
-                Guest guest = new Guest(name, phoneNr, email, password);
-                GuestList.guestList.Add(guest);
-                return guest;
-            }
-            else if(userInput == "3")
-            {
-                MainMenu();
-            }
-            else
-            {
-                Console.WriteLine("Error, Invalid input");
-            }
         }
-    return null;
+        return guest;
+           
     }
+    static Guest RegisterGuest()
+    {
+        Console.WriteLine("Register new guest");
+        Console.Write("Name: ");
+        string name = Console.ReadLine()!;
+        Console.Write("Phone number:");
+        string phoneNr = Console.ReadLine()!;
+        Console.Write("Email: ");
+        string email = Console.ReadLine()!;
+        Console.Write("Password: ");
+        string password = Console.ReadLine()!;
+        Guest guest = new Guest(name, phoneNr, email, password);
+        GuestList.AddGuest(guest);
+        return guest;
+}
 }
