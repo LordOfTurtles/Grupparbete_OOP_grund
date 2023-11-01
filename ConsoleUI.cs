@@ -283,9 +283,9 @@ static class ConsoleUI
                 Console.WriteLine($"Currently booked periods for room number {room!.RoomNr}. '{room!.Description}':");
                 foreach(Booking bp in room!.roomBookings)
                 //types out the currently booked periods for the room chosen
-                    {
-                        Console.Write($"\n{bp.BookingPeriod.StartDate} until {bp.BookingPeriod.EndDate} ");
-                    }       
+                {
+                    Console.Write($"\n{bp.BookingPeriod.StartDate} until {bp.BookingPeriod.EndDate} ");
+                }       
                 Console.WriteLine($"check in at: 15.00");
                 Console.Write("\nPlease input a startdate for your booking (mm/dd/yyyy): ");
                 string userInput = Console.ReadLine()!;
@@ -296,15 +296,26 @@ static class ConsoleUI
                     Console.WriteLine("check out at 11.00");
                     Console.Write("\nPlease input an enddate for your booking (mm/dd/yyyy):");
                     userInput = Console.ReadLine()!;
-                    if(DateOnly.TryParse(userInput, out DateOnly endDate) == true)
+                    if(DateOnly.TryParse(userInput, out DateOnly endDate) == true && endDate > startDate)
                     //checks if the string "userInput" input by the guest is in a valid format for being converted to DateTime and if so produces a DateTime variable "endDate"
                     {
+                        if(Guest.CompareDates(startDate, endDate, room) == true)
+                        {
                         BookingPeriod myBp = new BookingPeriod(startDate, endDate);
                         roomBooking.Add(room);
                         //Adds the chosen room to list of rooms to be booked
                         Booking myBooking = new Booking(guest, roomBooking, myBp, roomBooking[0].Capacity);
                         Guest.BookRoom(room, myBooking, guest);
                         Console.WriteLine($"{myBooking.Guest.Name}, {myBooking.BookedRooms[0].RoomNr}, Period: {myBooking.BookingPeriod.StartDate} until {myBooking.BookingPeriod.EndDate} check in at: {myBooking.BookingPeriod.StartTime} check out at: {myBooking.BookingPeriod.EndTime}");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Error, room is already booked for part of the specified period");
+                        }
+                    }
+                    else if(endDate < startDate)
+                    {
+                        Console.WriteLine("Error, enddate must be later than startdate");
                     }
                     else
                     {
