@@ -22,10 +22,9 @@ static class ConsoleUI
             {
                 StaffMenu();
             }
-
             else
             {
-                Console.WriteLine("Invalid input.");
+                PrintErrorMessanger(null);
             }
         }      
     }
@@ -47,7 +46,7 @@ static class ConsoleUI
                 MainMenu();
             break;
             default:
-                Console.WriteLine("Error, invalid input");
+                PrintErrorMessanger(null);
                 GuestMenu();
             break;          
         }
@@ -72,7 +71,8 @@ static class ConsoleUI
                     }
                     else
                     {
-                        Console.WriteLine("Error, invalid input");
+                        PrintErrorMessanger(null);
+                        
                     }
                 break;
 
@@ -89,7 +89,7 @@ static class ConsoleUI
                 break;
 
                 default:
-                Console.WriteLine("Invalid input.");
+                PrintErrorMessanger(null);
                 break;
 
             }
@@ -164,7 +164,7 @@ static class ConsoleUI
                             if(Hotel.Rooms[i].roomBookings.Exists(x => x.IsChecked == true) && Hotel.Rooms[i].roomBookings.Count > 0)
                             //checks that the specified room is not currently checked into and that there is a booking for the room
                             {
-                                Console.WriteLine($"Error, Room number: {Hotel.Rooms[i].RoomNr}, '{Hotel.Rooms[i].Description}' is already checked into.");
+                                PrintErrorMessanger($"Room number: {Hotel.Rooms[i].RoomNr}, '{Hotel.Rooms[i].Description}' is already checked into.");
                             }
                             //checks if if there are any existing booking
                             else if(Hotel.Rooms[i].roomBookings.Count > 0)
@@ -184,19 +184,20 @@ static class ConsoleUI
                                 }
                                 else
                                 {
-                                    Console.WriteLine("Error, invalid input");
+                                    PrintErrorMessanger(null);
                                 }
                             
                             }
                             else
                             {
-                                Console.WriteLine($"Error, Room number: {Hotel.Rooms[i].RoomNr}, '{Hotel.Rooms[i].Description}' has not been booked.");
+                                PrintErrorMessanger($"Room number: {Hotel.Rooms[i].RoomNr}, '{Hotel.Rooms[i].Description}' has not been booked.");
+                                
                             }
                             Console.WriteLine(GuestList.guestList[0].guestBookings[0].IsChecked);
                         }
                         else
                         {
-                            Console.WriteLine($"Error! no room with roomnumber '{roomNr}' exists");
+                            PrintErrorMessanger($"no room with roomnumber '{roomNr}' exists");
                         }
                         Console.ReadKey();
                     }
@@ -233,12 +234,14 @@ static class ConsoleUI
                             }
                             else
                             {
-                                Console.WriteLine($"Error, Room number: {Hotel.Rooms[i].RoomNr}. {Hotel.Rooms[i].Description}, is currently not checked into.");
+                                PrintErrorMessanger($"Room number: {Hotel.Rooms[i].RoomNr}. {Hotel.Rooms[i].Description}, is currently not checked into.");
+                                
                             }
                         }
                         else
                         {
-                            Console.WriteLine($"Error! no room with roomnumber '{roomNr}' exists");
+                            PrintErrorMessanger($"no room with roomnumber '{roomNr}' exists");
+                            
                         }
                         Console.WriteLine(GuestList.guestList[0].guestBookings[0].IsChecked);
                         Console.ReadKey();
@@ -258,7 +261,8 @@ static class ConsoleUI
                     //direktBokning();
 
                     default:
-                    Console.WriteLine("Invalid input");
+                    PrintErrorMessanger(null);
+                    Console.ReadKey();
                     break;
                 }
             }           
@@ -312,7 +316,8 @@ static class ConsoleUI
                         }
                         else
                         {
-                            Console.WriteLine("Error, room is already booked for part of the specified period");
+                            PrintErrorMessanger("room is already booked for part of the specified period");
+                            
                         }
                     }
                     else if(endDate < startDate)
@@ -420,6 +425,19 @@ public static void Initialize()
     b.BookedRooms.Add(Hotel.Rooms[1]);
 
     Guest.BookRoom(Hotel.Rooms[1], b, b.Guest);
+}
+
+public static void PrintErrorMessanger(string? message)
+{
+    if(message == null)
+    {
+        Console.WriteLine("Error invalid input");
+    }
+    else
+    {
+        Console.WriteLine($"Error, {message}");
+    }
+    
 }
 
 }
