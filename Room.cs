@@ -22,6 +22,7 @@ class Room
         FloorNr = floorNr;
     }
 
+    //An override method that overrides whats typed out in the console when a room object is the input 
     public override string ToString()
     {
         string rom = $"Room number: {RoomNr}. '{Description}'\nPrice: {RoomPrice}kr Capacity: {Capacity} \nCurrently booked dates: ";

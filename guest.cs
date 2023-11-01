@@ -10,18 +10,19 @@ class Guest
     public List<Booking> guestBookings = new List<Booking>();
     //list of reviews made by a specific guest
 
+    //constructor for the guest class, does not include a list of reviews which are added when written by the guest
     public Guest(string name, string phoneNr, string email, string password)
     {
-        //constructor for the guest class, does not include a list of reviews which are added when written by the guest
+       
         Name = name;
         PhoneNr = phoneNr;
         Email = email;
         Password = password;
     }
 
+    //method for checking what rooms are available and when, also offers the guest the option to book a room through calling on the BookRoom method
     public static string AvaliableRooms()
     {
-        //method for checking what rooms are available and when, also offers the guest the option to book a room through calling on the BookRoom method
         string output = "Currently available rooms:";
         foreach(Room r in Hotel.Rooms)
         //goes through every room that exists in the static list in the hotel class
@@ -37,6 +38,7 @@ class Guest
         guest.guestBookings.Add(myBooking);
     }
 
+    //Method that checks that a timeperiod doesnt coincide with an already existing booking
     public static bool CompareDates(DateOnly startDate, DateOnly endDate, Room room)
     {
         foreach(Booking b in room.roomBookings)
@@ -52,15 +54,14 @@ class Guest
         }
         return true;
     }
-    //method for guests to book rooms
-    
+    //method to add a review for a specific booking
     public static void AddReview( Booking booking, string review)
     {
-        //method for guest to write a review for a specific booking
+        
         booking.Review = review;
     }
 }
-
+//a class containing the list of guests 
 class GuestList
 {
     public static List<Guest> guestList = new List<Guest>();
@@ -70,6 +71,7 @@ class GuestList
         guestList.Add(guest);
     }
 
+    //Method that logs in guest user with pre registred email and password through registration method
     public static Guest LogInAttempt(string email, string password, out string outputMessage)
     {
         if(guestList.Exists(x => x.Email.Contains(email)))

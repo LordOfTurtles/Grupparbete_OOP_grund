@@ -4,6 +4,7 @@ using Hotel_Management_Software;
 
 static class ConsoleUI
 {
+    //Main menu for the user (guest or staff)
     public static void MainMenu()
     {
         bool isRunning = true;
@@ -28,7 +29,7 @@ static class ConsoleUI
             }
         }      
     }
-
+    //Guest menu with options to login, sign up or go back to main menu
     public static void GuestMenu()
     {
         Guest guest = null!;
@@ -61,7 +62,6 @@ static class ConsoleUI
                     Console.WriteLine(Guest.AvaliableRooms());
                     Console.WriteLine("Would you like to book a room? [Y]/[N]");
                     userInput = Console.ReadLine()!;
-                    //asks the guest if they want to book a room after looking at availability
                     if(userInput.ToLower() == "y")
                     {
                         BookingInput(guest);
@@ -95,7 +95,7 @@ static class ConsoleUI
             }
         }
     }
-
+    //menu for the staff, enter a admin password.
     public static void StaffMenu()
     {
         bool isRunning = true;
@@ -166,6 +166,7 @@ static class ConsoleUI
                             {
                                 Console.WriteLine($"Error, Room number: {Hotel.Rooms[i].RoomNr}, '{Hotel.Rooms[i].Description}' is already checked into.");
                             }
+                            //checks if if there are any existing booking
                             else if(Hotel.Rooms[i].roomBookings.Count > 0)
                             {
                                 int bNr = 1;
@@ -228,7 +229,7 @@ static class ConsoleUI
                                 }
                                 Hotel.CheckOut(i, j);
 
-                                //sets the status of the room to not be checked into or booked
+                                //sets the status of the room to not be checked into and removes the booking
                             }
                             else
                             {
@@ -276,7 +277,7 @@ static class ConsoleUI
             Console.Write("What roomnumber would you like to book?: ");
             string roomNr = Console.ReadLine()!;
             if(Hotel.Rooms.Exists(x => x.RoomNr.Contains(roomNr)))
-            //checks if the roomnumber input by the guest matches one in the list of rooms for the hotel
+            //checks if the roomnumber input by the guest matches the list of rooms for the hotel
             {
                 Room? room = Hotel.Rooms.Find(x => x.RoomNr.Contains(roomNr));
                 //makes an integer for the index used in the list of rooms matching the roomnumber input by the guest
@@ -299,6 +300,7 @@ static class ConsoleUI
                     if(DateOnly.TryParse(userInput, out DateOnly endDate) == true && endDate > startDate)
                     //checks if the string "userInput" input by the guest is in a valid format for being converted to DateTime and if so produces a DateTime variable "endDate"
                     {
+                        //checks that the timeperiod input by the guest doesnt coincide with an already existing booking
                         if(Guest.CompareDates(startDate, endDate, room) == true)
                         {
                         BookingPeriod myBp = new BookingPeriod(startDate, endDate);
@@ -330,6 +332,7 @@ static class ConsoleUI
         }
     }
 
+    //Method for where a guest can write a review
     static void ReviewInput(Guest guest)
     {
         Console.WriteLine("Which booking do you want to review?");
@@ -347,6 +350,7 @@ static class ConsoleUI
         Console.WriteLine($"Review {guest.guestBookings[input-1].Review}");
 
     }
+    //geust login method stored from previous registration
     static Guest LoginGuest()
     {
         Guest guest = null!;
@@ -382,6 +386,8 @@ static class ConsoleUI
         return guest;
            
     }
+
+    //guest registration method
     static Guest RegisterGuest()
     {
         Console.WriteLine("Register new guest");
@@ -398,6 +404,7 @@ static class ConsoleUI
         return guest;
     }
 
+//testing method that adds guest, rooms and bookings at start up.
 public static void Initialize()
 {
     Hotel.Rooms.Add(new Room("1", "Royal suite", 3999.99, 5, 4));

@@ -32,7 +32,7 @@ class Booking
         TotalOccupants = totalOccupants;
         IsChecked = false;       
     }
-
+    //An override method that overrides whats typed out in the console when a booking object is the input 
     public override string ToString()
     {
         string output = "Rooms:  ";
@@ -54,6 +54,8 @@ class BookingPeriod
     public TimeOnly StartTime;
 
     public TimeOnly EndTime;
+
+    //bookingPeriod constructor with set start and endTimes
     public BookingPeriod(DateOnly startDate, DateOnly endDate)
     {
         StartDate = startDate;
@@ -62,6 +64,7 @@ class BookingPeriod
         EndTime = new TimeOnly (11,00);
     }
 
+    //An override method that overrides whats typed out in the console when a bookingPeriod is the input 
     public override string ToString()
     {   
 
