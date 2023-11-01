@@ -8,6 +8,7 @@ class Guest
     public string Email;
     public string Password;
     public List<Booking> guestBookings = new List<Booking>();
+    public List<Booking> guestPastBookings = new List<Booking>();   
     //list of reviews made by a specific guest
 
     //constructor for the guest class, does not include a list of reviews which are added when written by the guest
@@ -43,7 +44,8 @@ class Guest
     {
         foreach(Booking b in room.roomBookings)
         {
-            if(startDate >= b.BookingPeriod.StartDate && startDate < b.BookingPeriod.EndDate || endDate > b.BookingPeriod.StartDate && endDate <= b.BookingPeriod.EndDate)
+            if(startDate >= b.BookingPeriod.StartDate && startDate < b.BookingPeriod.EndDate || 
+               endDate > b.BookingPeriod.StartDate && endDate <= b.BookingPeriod.EndDate)
             {
                 return false;
             }

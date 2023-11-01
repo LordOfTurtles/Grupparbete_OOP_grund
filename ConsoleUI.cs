@@ -55,7 +55,7 @@ static class ConsoleUI
         while(isRunning)
         {
             Console.Clear();
-            Console.WriteLine("Please select an option: \n1.Check availability \n2.Start a new booking \n3.Write a review \nLog out[x]");
+            Console.WriteLine("Please select an option: \n1.Check availability \n2.Start a new booking \n3.Write a review \n4.Read reviews \nLog out[x]");
             userInput = Console.ReadLine()!;
             Console.Clear();
             switch(userInput)
@@ -85,6 +85,10 @@ static class ConsoleUI
 
                 case "3":
                 ReviewInput(guest);
+                break;
+
+                case "4":
+                ReadReviews();
                 break;
 
                 case "x":
@@ -231,7 +235,7 @@ static class ConsoleUI
 
 
                                 }
-                                Hotel.CheckOut(i, j);
+                                Hotel.CheckOut(Hotel.Rooms[i].roomBookings[j], Hotel.Rooms[i]);
 
                                 //sets the status of the room to not be checked into and removes the booking
                             }
@@ -346,11 +350,11 @@ static class ConsoleUI
     {
         Console.Clear();
         Console.WriteLine("Which booking do you want to review?");
-        for( int i = 0; i < guest.guestBookings.Count; i++)
+        for( int i = 0; i < guest.guestPastBookings.Count; i++)
         {
-            if(guest.guestBookings[i].Review == null)
+            if(guest.guestPastBookings[i].Review == null)
             {
-                Console.WriteLine($"{i+1}. {guest.guestBookings[i]}");
+                Console.WriteLine($"{i+1}. {guest.guestPastBookings[i]}");
                 //Incomplete function: bookings with a review are not displayed but can be overwritten.
             }
         }
@@ -360,11 +364,29 @@ static class ConsoleUI
         Console.WriteLine("Enter your review here:");
         string review = Console.ReadLine()!;
 
-        Guest.AddReview(guest.guestBookings[input -1],review);
+        Guest.AddReview(guest.guestPastBookings[input -1],review);
 
-        Console.WriteLine($"Review {guest.guestBookings[input-1].Review}");
+        Console.WriteLine($"Review {guest.guestPastBookings[input-1].Review}");
 
     }
+
+    static void ReadReviews()
+    {
+        foreach(Room r in Hotel.Rooms)
+        {
+            Console.WriteLine($"{r.RoomNr} {r.Description}: ");
+            foreach(Booking b in r.pastBookings)
+            {
+                if(b.Review != null)
+                {
+                    Console.WriteLine(b.Review);
+                }
+            }
+        }
+        System.Console.WriteLine("Press any key to continue");
+        Console.ReadKey();
+    }
+
     //guest login method stored from previous registration
     static Guest LoginGuest()
     {
