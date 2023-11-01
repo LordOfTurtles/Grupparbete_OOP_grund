@@ -42,12 +42,30 @@ class Guest
     {
         //method for guest to write a review for a specific booking
         booking.Review = review;
-        
-        
     }
 }
 
 class GuestList
 {
     public static List<Guest> guestList = new List<Guest>();
+
+    public static void AddGuest(Guest guest)
+    {
+        guestList.Add(guest);
+    }
+
+    public static Guest LogInAttempt(string email, string password, out string outputMessage)
+    {
+        if(guestList.Exists(x => x.Email.Contains(email)))
+        {
+            Guest? guest = guestList.Find(x => x.Email.Contains(email));
+            if(guest!.Password == password)
+            {
+                outputMessage = "Login successful";
+                return guest;
+            }
+        }
+        outputMessage = "Error, incorrect email or password";
+        return null!;
+    }
 }
