@@ -6,7 +6,7 @@ namespace Hotel_Management_Software;
 class Hotel
 //class for a specific hotel, including its name, how many guests are currently staying and a list of all the rooms
 {
-    public string Name;
+    public string? Name;
     public int CurrentGuests;
 
     public static string Password = "Hotel123";
