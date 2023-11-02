@@ -314,12 +314,8 @@ static class ConsoleUI
                         //checks that the timeperiod input by the guest doesnt coincide with an already existing booking
                         if(Guest.CompareDates(startDate, endDate, room) == true)
                         {
-                        BookingPeriod myBp = new BookingPeriod(startDate, endDate);
-                        roomBooking.Add(room);
-                        //Adds the chosen room to list of rooms to be booked
-                        Booking myBooking = new Booking(guest, roomBooking, myBp, roomBooking[0].Capacity);
-                        Guest.BookRoom(room, myBooking, guest);
-                        Console.WriteLine($"{myBooking.Guest.Name}, {myBooking.BookedRooms[0].RoomNr}, Period: {myBooking.BookingPeriod.StartDate} until {myBooking.BookingPeriod.EndDate} check in at: {myBooking.BookingPeriod.StartTime} check out at: {myBooking.BookingPeriod.EndTime}");
+                            Console.WriteLine(Guest.BookRoom(room, startDate, endDate, guest));
+                            Console.ReadKey();
                         }
                         else
                         {
@@ -347,57 +343,106 @@ static class ConsoleUI
 
     static void CustomizedBooking(Guest guest)
     {
-        
-        Console.WriteLine("What is your max price per night?");
-        double roomPrice = double.Parse(Console.ReadLine());
-
-        Console.WriteLine("What capacity size is requiered for the room?");
-        int roomSize = int.Parse(Console.ReadLine());
-        int safe = 0;
-
-        Console.WriteLine("What date would you like to start your stay? (mm/dd/yyyy):");
-        string dateInput = Console.ReadLine();
-        if(DateOnly.TryParse(dateInput,out DateOnly startDate) == true)
+        Room tempRoom = new Room("0","temp", 0, 0, 0);
+        bool isRunning = true;
+        while(isRunning)
         {
-            Console.WriteLine("What date will you be ending your stay (mm/dd/yyyy):");
-            dateInput = Console.ReadLine();
-            if(DateOnly.TryParse(dateInput, out DateOnly endDate) == true && endDate > startDate)
+            Console.Clear();
+            string userInput;
+            
+            while(isRunning)
             {
-                foreach( Room r in Hotel.Rooms)
+                Console.WriteLine("What is your max price per night?");
+                userInput = Console.ReadLine()!;
+                if(double.TryParse(userInput, out double rP))
                 {
-                    if( roomPrice >= r.RoomPrice && roomSize <= r.Capacity)
-                    {
-                        safe++;
-                        Console.WriteLine(r);
-                    }
-                    
-                }
-
-                if (safe > 0)
-                {
-                    BookingInput(guest);
+                    tempRoom.RoomPrice = rP;
+                    break;
                 }
                 else
                 {
-                    Console.WriteLine("There is no match to you request");
+                    PrintErrorMessanger("invalid input");
+                    continue;
                 }
-                
-            }
-            else if(endDate <= startDate)
-            {
-                PrintErrorMessanger("enddate must be later than startdate");
-            }
-            else
-            {
-                PrintErrorMessanger("incorrect format for enddate");
-            }
-           
-        }
-        else
-        {
-            PrintErrorMessanger("incorrect format for startdate");
-        }
 
+            }
+            while(isRunning)
+            {
+                Console.WriteLine("What capacity size is requiered for the room?");
+                userInput = Console.ReadLine()!;
+                if(int.TryParse(userInput, out int rS))
+                {
+                    tempRoom.Capacity = rS;
+                    break;
+                }
+                {
+                    PrintErrorMessanger("invalid input");
+                    continue;
+                }
+            }
+            while(isRunning)
+            {
+                Console.WriteLine("What date would you like to start your stay? (mm/dd/yyyy):");
+                string dateInput = Console.ReadLine()!;
+                if(DateOnly.TryParse(dateInput,out DateOnly startDate) == true)
+                {
+                    Console.WriteLine("What date will you be ending your stay (mm/dd/yyyy):");
+                    dateInput = Console.ReadLine()!;
+                    if(DateOnly.TryParse(dateInput, out DateOnly endDate) == true && endDate > startDate)
+                    {
+                        List<Room> tempList = new List<Room>();
+                        int safe = 0;
+                        foreach( Room r in Hotel.Rooms)
+                        {
+                            if( tempRoom.RoomPrice >= r.RoomPrice && tempRoom.Capacity <= r.Capacity && Guest.CompareDates(startDate, endDate, r))
+                            {
+                                safe++;
+                                Console.WriteLine($"\n{r}\n");
+                                tempList.Add(r);
+                            }
+                        }
+                        if (safe > 0)
+                        {
+                            while(isRunning)
+                            {
+                                Console.Write("What roomnumber would you like to book?: ");
+                                userInput = Console.ReadLine()!;
+                                if(tempList.Exists(x => x.RoomNr.Contains(userInput)))
+                                {
+                                    Room? room = tempList.Find(x => x.RoomNr.Contains(userInput));
+                                    Console.WriteLine(Guest.BookRoom(room!, startDate, endDate, guest));
+                                    Console.ReadKey();
+                                    isRunning = false;
+                                }
+                                else
+                                {
+                                    PrintErrorMessanger("invalid input");
+                                    continue;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("There is no match to you request");
+                        }
+                        
+                    }
+                    else if(endDate <= startDate)
+                    {
+                        PrintErrorMessanger("enddate must be later than startdate");
+                    }
+                    else
+                    {
+                        PrintErrorMessanger("incorrect format for enddate");
+                    }
+                
+                }
+                else
+                {
+                    PrintErrorMessanger("incorrect format for startdate");
+                }
+            }
+        }
     }
 
     //Method for where a guest can write a review
@@ -513,7 +558,7 @@ public static void Initialize()
     Booking b = new Booking(GuestList.guestList[0], new List<Room>(), new BookingPeriod(new DateOnly (2023,12,24), new DateOnly (2023,12,26)), 1);
     b.BookedRooms.Add(Hotel.Rooms[1]);
 
-    Guest.BookRoom(Hotel.Rooms[1], b, b.Guest);
+    Guest.BookRoom(Hotel.Rooms[1], new DateOnly (2023,12,24), new DateOnly (2023,12,26), b.Guest);
 }
 
 public static void PrintErrorMessanger(string? message)
