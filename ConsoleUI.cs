@@ -80,7 +80,7 @@ static class ConsoleUI
                 break;
 
                 case "2":
-                BookingInput(guest);
+                CustomizedBooking(guest);
                 break;
 
                 case "3":
@@ -282,7 +282,6 @@ static class ConsoleUI
 
     static void BookingInput(Guest guest)
     {
-        Console.Clear();
         {
             List<Room> roomBooking = new List<Room>();
             //a temporary list in which rooms that are to be booked are added
@@ -330,19 +329,75 @@ static class ConsoleUI
                     }
                     else if(endDate < startDate)
                     {
-                        Console.WriteLine("Error, enddate must be later than startdate");
+                        PrintErrorMessanger("enddate must be later than startdate");
                     }
                     else
                     {
-                        Console.WriteLine("Error, incorrect format for enddate");
+                        PrintErrorMessanger("incorrect format for enddate");
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Error, incorrect format for startdate");
+                    PrintErrorMessanger("incorrect format for startdate");
                 }
             }
         }
+
+    }
+
+    static void CustomizedBooking(Guest guest)
+    {
+        
+        Console.WriteLine("What is your max price per night?");
+        double roomPrice = double.Parse(Console.ReadLine());
+
+        Console.WriteLine("What capacity size is requiered for the room?");
+        int roomSize = int.Parse(Console.ReadLine());
+        int safe = 0;
+
+        Console.WriteLine("What date would you like to start your stay? (mm/dd/yyyy):");
+        string dateInput = Console.ReadLine();
+        if(DateOnly.TryParse(dateInput,out DateOnly startDate) == true)
+        {
+            Console.WriteLine("What date will you be ending your stay (mm/dd/yyyy):");
+            dateInput = Console.ReadLine();
+            if(DateOnly.TryParse(dateInput, out DateOnly endDate) == true && endDate > startDate)
+            {
+                foreach( Room r in Hotel.Rooms)
+                {
+                    if( roomPrice >= r.RoomPrice && roomSize <= r.Capacity)
+                    {
+                        safe++;
+                        Console.WriteLine(r);
+                    }
+                    
+                }
+
+                if (safe > 0)
+                {
+                    BookingInput(guest);
+                }
+                else
+                {
+                    Console.WriteLine("There is no match to you request");
+                }
+                
+            }
+            else if(endDate <= startDate)
+            {
+                PrintErrorMessanger("enddate must be later than startdate");
+            }
+            else
+            {
+                PrintErrorMessanger("incorrect format for enddate");
+            }
+           
+        }
+        else
+        {
+            PrintErrorMessanger("incorrect format for startdate");
+        }
+
     }
 
     //Method for where a guest can write a review
